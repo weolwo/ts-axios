@@ -20,4 +20,5 @@ export interface AxiosRequestConfig {
   method?: Method //表示可选参数
   data?: any
   params?: any
+  headers?: any
 }

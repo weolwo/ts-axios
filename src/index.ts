@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from './types'
 import xhr from './xhr'
 import { buildUrl } from './helpers/url'
 import { transformRequest } from './helpers/data'
+import { processHeaders } from './helpers/headers'
 
 export default function axios(config: AxiosRequestConfig) {
   processConfig(config)
@@ -10,6 +11,8 @@ export default function axios(config: AxiosRequestConfig) {
 
 export function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
+  // 由于下面data已经被处理过，所以把处理header的方法放在前面
+  config.headers = transformRequestHeader(config)
   config.data = transformRequestData(config)
 }
 
@@ -17,7 +20,14 @@ export function transformUrl(config: AxiosRequestConfig): string {
   const { url, params } = config
   return buildUrl(url, params)
 }
+
 // 处理data数据
 export function transformRequestData(config: AxiosRequestConfig): any {
   return transformRequest(config.data)
+}
+
+// 处理请求头
+export function transformRequestHeader(config: AxiosRequestConfig): any {
+  const { data, headers = {} } = config
+  return processHeaders(headers, data)
 }
