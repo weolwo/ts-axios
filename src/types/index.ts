@@ -22,6 +22,7 @@ export interface AxiosRequestConfig {
   params?: any
   headers?: any
   responseType?: XMLHttpRequestResponseType
+  timeout?: number
 }
 
 // 响应的数据接口
@@ -33,7 +34,17 @@ export interface AxiosResponse {
   request: any
   headers: any
 }
+
 // 最后把响应的数据封装成一个Promise
 export interface AxiosPromise extends Promise<AxiosResponse> {
 
+}
+
+// 错误信息封装类
+export interface AxiosError extends Error {
+  isAxiosError: boolean
+  config: AxiosRequestConfig
+  code?: string | null
+  request?: any
+  response?: AxiosResponse
 }
