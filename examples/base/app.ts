@@ -1,5 +1,6 @@
 import axios from '../../src/index'
 
+// 解析请求url测试用例
 /*axios({
   method: 'get',
   url: '/base/get',
@@ -61,7 +62,7 @@ axios({
   }
 })*/
 
-axios({
+/*axios({
   method: 'post',
   url: '/base/post',
   data: {
@@ -70,6 +71,7 @@ axios({
   }
 })
 
+// 设置请求头测试用例
 axios({
   method: 'post',
   url: '/base/post',
@@ -89,4 +91,28 @@ axios({
   method: 'post',
   url: '/base/post',
   data: searchParams
+})*/
+
+// 获取响应数据测试用例
+axios({
+  method: 'post',
+  url: '/base/post',
+  data: {
+    a: 1,
+    b: 2
+  }
+}).then((res) => {
+  console.log(res)
+})
+
+axios({
+  method: 'post',
+  url: '/base/post',
+  responseType: 'json',
+  data: {
+    a: 3,
+    b: 4
+  }
+}).then((res) => {
+  console.log(res)
 })

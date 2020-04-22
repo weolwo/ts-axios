@@ -27,3 +27,23 @@ export function normalizeHeaderName(headers: any, normalizeName: string): void {
     }
   })
 }
+
+// 解析headers，由于默认返回的header数据是字符串，我们希望把他解析成对象
+export function parsingResponseHeader(headers: string): any {
+  let parsings = Object.create(null)
+  if (!headers) {
+    return
+  }
+  headers.split('\r\n').forEach((line) => {
+    let [key, value] = line.split(':')
+    key = key.trim().toLowerCase()
+    if (!key) {
+      return
+    }
+    if (value) {
+      value = value.trim()
+    }
+    parsings[key] = value
+  })
+  return parsings
+}
