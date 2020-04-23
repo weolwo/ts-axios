@@ -11,7 +11,7 @@ export function transformRequest(data: any) {
 // 处理响应数据中的data，试着把他转换成json,当用户没有传响应类型的时候
 export function transformResponse(data: any): any {
   try {
-    if (data === typeof 'string') {
+    if (typeof data === 'string') {
       data = JSON.parse(data)
     }
   } catch (e) {
