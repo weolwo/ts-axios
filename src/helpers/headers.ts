@@ -45,5 +45,5 @@ export function parsingResponseHeader(headers: string): any {
     }
     parsings[key] = value
   })
-  return parsings
+return parsings
 }

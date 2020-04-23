@@ -1,6 +1,6 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
-import { parsingResponseHeader } from './helpers/headers'
-import { createError } from './helpers/error'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
+import { parsingResponseHeader } from '../helpers/headers'
+import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   // 把响应封装成Promise
@@ -18,7 +18,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     if (timeout) {
       xmlHttpRequest.timeout = timeout
     }
-    xmlHttpRequest.open(method.toLowerCase(), url, true)
+    xmlHttpRequest.open(method.toLowerCase(), url!, true)
     xmlHttpRequest.onreadystatechange = function handleLoad() {
       if (xmlHttpRequest.readyState !== 4) {
         return
