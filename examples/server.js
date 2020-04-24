@@ -99,7 +99,7 @@ router.put('/extend/put', function(req, res) {
 })
 
 router.patch('/extend/patch', function(req, res) {
-  console.log('patch----------',req.body)
+  console.log('patch----------', req.body)
   res.json(req.body)
 })
 
@@ -113,6 +113,12 @@ router.get('/extend/user', function(req, res) {
     }
   })
 })
+
+// 拦截器测试接口
+router.get('/interceptor/get', function(req, res) {
+  res.end('hello')
+})
+
 const port = process.env.PORT || 8088
 module.exports = app.listen(port, (err) => {
   if (!err) {

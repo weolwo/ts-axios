@@ -1,4 +1,6 @@
 // 类型的一种定义方式，但不能被继承和实现 https://www.typescriptlang.org/docs/handbook/literal-types.html
+import { InterceptorManager } from '../core/InterceptorManager'
+
 export type Method =
   | 'get'
   | 'GET'
@@ -52,6 +54,11 @@ export interface AxiosError extends Error {
 // 给 axios 混合对象定义接口
 export interface Axios {
 
+  interceptors: {
+    request: InterceptorManager<AxiosRequestConfig>
+    response: InterceptorManager<AxiosResponse>
+  }
+
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
 
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -75,4 +82,21 @@ export interface AxiosInstance extends Axios {
 
   // 方法重载
   <T = any>(url: string, config: AxiosRequestConfig): AxiosPromise<T>
+}
+
+// 拦截器接口定义
+export interface AxiosInterceptorManager<T> {
+
+  use(resolve: ResolveFn<T>, reject?: RejectFn): number
+
+  // 移除拦截器
+  eject(id: number): void
+}
+
+export interface ResolveFn<T> {
+  (value: T): T | AxiosPromise<T>
+}
+
+export interface RejectFn {
+  (error: any): any
 }
