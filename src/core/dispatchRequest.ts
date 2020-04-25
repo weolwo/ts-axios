@@ -1,21 +1,20 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 import xhr from './xhr'
 import { buildUrl } from '../helpers/url'
-import { transformRequest, transformResponse } from '../helpers/data'
-import { flatHeaders, processHeaders } from '../helpers/headers'
+import { flatHeaders } from '../helpers/headers'
+import { transform } from './transform'
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  return xhr(config).then((res) => {
+  return xhr(config).then(res => {
     return transformResponseData(res)
   })
 }
 
 export function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
-  // 由于下面data已经被处理过，所以把处理header的方法放在前面
-  config.headers = transformRequestHeader(config)
-  config.data = transformRequestData(config)
+
+  config.data = transform(config.headers, config.data, config.transformRequest)
   // 处理请求头
   config.headers = flatHeaders(config.headers, config.method!)
 }
@@ -25,19 +24,8 @@ export function transformUrl(config: AxiosRequestConfig): string {
   return buildUrl(url!, params) // url!断言为不会为null
 }
 
-// 处理data数据
-export function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data)
-}
-
-// 处理请求头
-export function transformRequestHeader(config: AxiosRequestConfig): any {
-  const { data, headers = {}, method } = config
-  return processHeaders(headers, data)
-}
-
 // 处理响应数据
 export function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
+  res.data = transform(res.headers, res.data, res.config.transformResponse)
   return res
 }

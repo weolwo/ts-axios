@@ -120,7 +120,14 @@ router.get('/interceptor/get', function(req, res) {
 })
 
 router.post('/config/post', function(req, res) {
-  res.end('hello')
+  res.json({
+    code: 0,
+    message: 'ok',
+    result: {
+      name: 'jack',
+      age: 18
+    }
+  })
 })
 
 const port = process.env.PORT || 8088
