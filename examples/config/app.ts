@@ -19,7 +19,7 @@ axios.defaults.headers.common['test2'] = 123
 })*/
 
 // 请求和响应的配置化测试用例
-axios({
+/*axios({
   transformRequest: [(function(data) {
     return qs.stringify(data)
   }), ...(axios.defaults.transformRequest as AxiosTransformer[])
@@ -30,6 +30,29 @@ axios({
     }
     return data
   }],
+  url: '/config/post',
+  method: 'post',
+  data: {
+    a: 1
+  }
+}).then((res) => {
+  console.log(res.data)
+})*/
+
+// 静态方法扩展测试用例
+const instance = axios.create({
+  transformRequest: [(function(data) {
+    return qs.stringify(data)
+  }), ...(axios.defaults.transformRequest as AxiosTransformer[])],
+  transformResponse: [...(axios.defaults.transformResponse as AxiosTransformer[]), function(data) {
+    if (typeof data === 'object') {
+      data.result.name = 'Lucy'
+    }
+    return data
+  }]
+})
+
+instance({
   url: '/config/post',
   method: 'post',
   data: {
