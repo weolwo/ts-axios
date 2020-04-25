@@ -25,6 +25,7 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  [propName: string]: any // 字符串索引签名
 }
 
 // 响应的数据接口
@@ -53,7 +54,7 @@ export interface AxiosError extends Error {
 
 // 给 axios 混合对象定义接口
 export interface Axios {
-
+  defaults: AxiosRequestConfig
   interceptors: {
     request: InterceptorManager<AxiosRequestConfig>
     response: InterceptorManager<AxiosResponse>

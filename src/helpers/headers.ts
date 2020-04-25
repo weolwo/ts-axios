@@ -1,4 +1,5 @@
-import { isPlainObject } from './util'
+import { deepMerge, isPlainObject } from './util'
+import { Method } from '../types'
 
 // 请求头处理
 export function processHeaders(headers: any, data: any): any {
@@ -45,5 +46,22 @@ export function parsingResponseHeader(headers: string): any {
     }
     parsings[key] = value
   })
-return parsings
+  return parsings
+}
+
+// 对于 common 中定义的 header 字段，我们都要提取，而对于 post、get 这类提取，需要和该次请求的方法对应
+export function flatHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers
+  }
+  headers = deepMerge(headers.common || {}, headers[method] || {}, headers)
+
+  // 我们可以通过 deepMerge 的方式把 common、post 的属性拷贝到 headers 这一级，然后再把 common、post 这些属性删掉
+  const needDeleteHeader = ['get', 'delete', 'head', 'options', 'put', 'post', 'patch', 'common']
+
+  needDeleteHeader.forEach(method => {
+    delete headers[method]
+  })
+
+  return headers
 }

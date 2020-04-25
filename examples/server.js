@@ -119,6 +119,10 @@ router.get('/interceptor/get', function(req, res) {
   res.end('hello')
 })
 
+router.post('/config/post', function(req, res) {
+  res.end('hello')
+})
+
 const port = process.env.PORT || 8088
 module.exports = app.listen(port, (err) => {
   if (!err) {

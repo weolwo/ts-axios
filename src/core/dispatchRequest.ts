@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 import xhr from './xhr'
 import { buildUrl } from '../helpers/url'
 import { transformRequest, transformResponse } from '../helpers/data'
-import { processHeaders } from '../helpers/headers'
+import { flatHeaders, processHeaders } from '../helpers/headers'
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
@@ -16,6 +16,8 @@ export function processConfig(config: AxiosRequestConfig): void {
   // 由于下面data已经被处理过，所以把处理header的方法放在前面
   config.headers = transformRequestHeader(config)
   config.data = transformRequestData(config)
+  // 处理请求头
+  config.headers = flatHeaders(config.headers, config.method!)
 }
 
 export function transformUrl(config: AxiosRequestConfig): string {
@@ -30,7 +32,7 @@ export function transformRequestData(config: AxiosRequestConfig): any {
 
 // 处理请求头
 export function transformRequestHeader(config: AxiosRequestConfig): any {
-  const { data, headers = {},method } = config
+  const { data, headers = {}, method } = config
   return processHeaders(headers, data)
 }
 

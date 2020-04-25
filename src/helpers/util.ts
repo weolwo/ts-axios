@@ -16,3 +16,27 @@ export function extend<T, U>(to: T, from: U): T & U {
   }
   return to as T & U
 }
+
+// 用于深拷贝
+export function deepMerge(...objects: any[]): any {
+
+  const result = Object.create(null)
+
+  objects.forEach(object => {
+    if (object) {
+      Object.keys(object).forEach(key => {
+        const val = object[key]
+        if (isPlainObject(val)) {
+          // 此处可能key已经存在，所以需要继续合并
+          if (isPlainObject(result[key])) {
+            result[key] = deepMerge(result[key], val) // 继续合并
+          }
+          result[key] = deepMerge({}, val) // 继续递归
+        } else {
+          result[key] = val
+        }
+      })
+    }
+  })
+  return result
+}
